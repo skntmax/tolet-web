@@ -2,12 +2,14 @@ import React , {useState} from 'react'
 import MyVerticallyCenteredModal from './../Logsignup'
 import { Button } from "react-bootstrap";
 import axios from 'axios';
+import swal from 'sweetalert'
 export default function Header() {
 
   const [modalShow, setModalShow] = React.useState(false);
 
   const [value,setValue] = useState({
     email:"" , 
+    username:"" , 
     password :"" ,
     attchment: [] ,
     video :[]
@@ -18,58 +20,120 @@ const [err , setError] = useState({
      setTitle : "" 
 })
  
-const submit = (e)=>{
-   debugger
-   console.log(value) 
+const submit = (e)=> {
+  //  debugger
+ const emailorusername = value.email ; 
+  const  isemail = String( emailorusername )
+  .toLowerCase()
+  .match(
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+   )
     
-   const model ={ 
-         name : value.email , 
-         title: value.password   
-       }
-                           
-     if(value.email!="" && value.password!="" ){
-                   axios.post('submitform/' , model ).then((res)=>{
-                   console.log(" response " , res.data )
-                   if(res.data.status==true){
-                    const formdata = new FormData()
-                       for(let i=0; i<value.attchment.length ; i++){
-                           formdata.append('attchment' , value.attchment[i] )
-                           axios.post('/addFile' , formdata, 
-                                {
-                            headers : { 
-                                   "Content-Type": "multipart/form-data"
-                                 }} )
-                                  .then(res=>{
-                                console.log(res.data.message)
-                           })    
-                        }
-                       alert(`name  ${res.data.name} and title ${res.data.title} saved `)           
-                       
-                   }
-                       else{
-                       alert(` error `)
-                       }
-               }).catch(err=>{
-                   console.log("Error : "  , err)
-               })
-        }
-        
-else{
+   if(isemail) {
+      
+     setValue({ 
+       email:emailorusername ,
+       username:"",
+       password:value.password  
+      })
+       
+    console.log("email" ,value )
+  
+    const model ={  
+      username : value.username , 
+      email: value.email ,
+      password:value.password   
+    }
+                        
+  if(value.email!="" && value.password!="" && value.username=== "" ) {
+                axios.post('login/' , model ).then((res)=> {
+                if(res.data.status===true){ 
+                swal(`${res.data.result[0].username}`, " succesfully logged in ", "success");
+                 
+                return    
+                }
+                else{
+                  swal(`${res.data.message}`,"", "warning");
+                    }
+            }).catch(err=>{
+                console.log("Error : "  , err)
+            })
+     }
+     
+  else {
+  
+  if(value.name==""){
+     setError({setName:" please enter name "})
+  }
+  if(value.title==""){
+     setError({setTitle:"please Enter title  "})
+    }
+  
+  if( value.name=="" && value.title=="" ){
+  
+  setError({setName:"please enter name "})
+  setError({setTitle:" please Enter title " }) 
+      }
+  }
     
-   if(value.name==""){
-        setError({setName:" please enter name "})
+   }  else{
+
+     setValue({ 
+      email:"" ,
+      username: emailorusername ,
+      password:value.password 
+     })
+     
+    
+  const model ={ 
+    username : value.username , 
+    email: value.email ,
+    password:value.password   
+    }
+
+    console.log("model" , model)
+     
+if(value.email=="" && value.password!="" && value.username!="" ){
+              axios.post('/login' , model ).then((res)=> {
+              console.log(" response " , res.data )
+              if(res.data.status==true){
+                swal(`${res.data.result[0].username}`, " succesfully logged in ", "success");
+                return  
+              }
+              swal(`${res.data.message}` , "", "warning");
+          }).catch(err=>{
+              console.log("Error : "  , err)
+          })
    }
-   if(value.title==""){
-        setError({setTitle:"please Enter title  "})
-       }
+   
+else{
+
+if(value.name==""){
+   setError({setName:" please enter name "})
+}
+if(value.title==""){
+   setError({setTitle:"please Enter title  "})
+  }
 
 if( value.name=="" && value.title=="" ){
-    
-   setError({setName:"please enter name "})
-   setError({setTitle:" please Enter title " }) 
-         }
-   }     
+
+setError({setName:"please enter name "})
+setError({setTitle:" please Enter title " }) 
+    }
+}
+
+
+
+
  
+
+}
+
+
+
+
+
+
 
 }
 
@@ -144,7 +208,7 @@ const onChangeHandler = (e)=>{
         show={modalShow}
         onHide={() => setModalShow(false)}
         onchangehandler = {onChangeHandler}
-        onsubmit = {submit}
+        onSubmit = {()=>submit(false) }
       
          />
 
