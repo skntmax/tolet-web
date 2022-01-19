@@ -1,7 +1,23 @@
-.stack-top{
+.stack-top {
     z-index: 9;
-    color:black;
+    color: black;
     background-color: aqua;
     font-size: 100px;
-    box-shadow: 5px 5px 8px 8px #888888;    
+    box-shadow: 5px 5px 8px 8px #888888;
+}
+
+.main_back {
+    background-color: rgba(0, 0, 0, 0.2);
+    width: auto;
+    height: 90vh;
+    padding: 50px;
+}
+
+.search_bar {
+    width: 100vw;
+    height: 50px;
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+    border: 1px solid red;
 }
