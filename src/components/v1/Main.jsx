@@ -32,29 +32,51 @@ export default function Main() {
     return (
         <React.Fragment>
 
-                <div 
-               //  style={{
-               //      clipPath: "polygon(34% 29%, 75% 0%, 24% 66%, 67% 90%, 43% 82%, 14% 72%)" , 
-               //      height:"100vh",
-               //      backgroundColor:"#268785" , 
-               //      "color" :"black"  
-               //  }}
-                
-                 />
+              
                  { /*    <div className="box stack-top text-center" > 
              Welcome Back  
                 </div> */ }
                   
-                {/* <input  type="button" value="show Test component" onClick={showTest} /> 
+                { /* <input  type="button" value="show Test component" onClick={showTest} /> 
              {value.testViews===true?<Test /> :"No Test component "}            
-                  </div> */}
+                  </div> */ }
+             <div className="main_body">
+              <div className="search_bar ">
+                   <div className="main_search_bar"> 
+                       
+                         <div> 
+                         <input type="text"  name="gender" placeholder="Gender" />
+                         </div>
+                        
+                         <div> 
+                         <input  type="number"  name="person"  placeholder="person" />
+                         </div>
 
-                  <div className="fluid-container main_back">
-                     
-                      <div className="search_bar" >
-                          search bar 
-                      </div>
-                  </div>
+
+                         <div> 
+                         <input type="text" name="type"   placeholder="type" />
+                         </div>
+
+
+
+                         <div> 
+                         <input type="text" name="location" placeholder="location" />
+                         </div>
+
+                         
+                         <div> 
+                         <input type="button" name="" className="btn btn-sm btn-outline-dark" value="search" />
+                         </div>
+
+
+                   </div>
+                   
+                   
+              </div>
+             
+             
+              </div>
+ 
 
         </React.Fragment>
     )
