@@ -12,6 +12,7 @@ import axios from 'axios'
 
 export default function MyVerticallyCenteredModal(props) {
    const history = useHistory()
+  const {activeUser} = props  
   const [currentState , setCurrentSa ] = useState({
      signup:false ,
      login:true
@@ -31,8 +32,7 @@ export default function MyVerticallyCenteredModal(props) {
 
    const signUp = (e)=>{
 
-    console.log(constant.status.success);
-   
+
      if((userVal.email &&userVal.name &&userVal.mobile && userVal.password)!="" ){
         const model = {
           email:userVal.email,
@@ -45,21 +45,22 @@ export default function MyVerticallyCenteredModal(props) {
         if(response.data.status===constant.status.success){
           swal("succesfully created ", response.data.data.username , "success");
          
-           props.onHide()
-            
-           axios.post('/login' , 
+          axios.post('/login' , 
            {username:"" , email:response.data.data.email ,
             password:model.password}).then(res=>{
-              if(response.data.status===constant.status.success)
-                         history.push(urls.dashboard)
-              swal("Erro", response.data.messsage , "error");
-              return 
+              if(response.data.status===constant.status.success){
+                history.push(urls.dashboard)
+                props.onHide() 
+              }
+              else{
+                swal("Erro", response.data.messsage , "error");
+                 return 
+              }           
                       }).catch(error=>{
-            swal("Erro", response.data.messsage , "error");
-              
-           })
+            swal("Erro", response.data.messsage , "error");    
+        }) 
         
-         }
+      }
 
         if(response.data.status===constant.status.failed)
               swal("Erro", response.data.data.messsage , "error");
@@ -78,7 +79,6 @@ export default function MyVerticallyCenteredModal(props) {
 
   return (
      <React.Fragment>
-       { console.log(urls) }
      <Modal
       {...props}
       size="sm"
@@ -88,8 +88,8 @@ export default function MyVerticallyCenteredModal(props) {
          
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter" >
-           
-          
+            
+        
            <span style={{display:"flex" , float:"left" , cursor:"pointer"}}> <p onClick={e=>setCurrentSa({
             signup:false ,
             login:true
@@ -104,9 +104,7 @@ export default function MyVerticallyCenteredModal(props) {
              })} className={currentState.signup===true ?"text-success text-decoration-underline " :" "} > 
              Signup
               </p>
-      </span>
-        
-
+      </span> 
         
          </Modal.Title>
       </Modal.Header>

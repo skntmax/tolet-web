@@ -37,6 +37,8 @@
     justify-items: center;
     align-items: center;
     background-color: grey;
+    background-image: url('/src/assets/images/fWtTL3.jpg');
+    /* background-blend-mode: hue; */
     /* clip-path: polygon(44% 23%, 75% 3%, 39% 44%, 92% 18%, 25% 100%, 91% 6%); */
     z-index: -1;
 }
@@ -58,10 +60,7 @@ div input {
     text-align: center;
 }
 
-div input:hover {
+ div input:hover {
     border-radius: 10px;
     box-shadow: 5px 5px rgba(0, 0, 0, 0.5);
-}
-
-
-/* div input[name="gender"] {} */
+  }

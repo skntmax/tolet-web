@@ -1,11 +1,12 @@
 import React , {useEffect, useState} from 'react'
 import MyVerticallyCenteredModal from './../Logsignup'
+import { Dropdown } from 'react-bootstrap';
 import { Button } from "react-bootstrap";
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import urls from './../../routes'
 import axios from 'axios';
 import swal from 'sweetalert'
-export default function Header() {
+export default function Header(props) {
    const history =useHistory() 
   const [modalShow, setModalShow] = React.useState(false);
 
@@ -171,11 +172,11 @@ const onChangeHandler = (e)=>{
   
     }
 
-
+   const {userData } = props
     return (
       
         <React.Fragment>
-         
+            
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark ">
         <div className="container-fluid">
           <a className="navbar-brand" href="#"> Tolet <i className="fas fa-home"></i> </a>
@@ -215,9 +216,30 @@ const onChangeHandler = (e)=>{
 
             </ul>
             <form className="d-flex"> 
-            <Button variant="outline-success btn-sm" onClick={() => setModalShow(true)}>
+            {
+        userData!=false? 
+        <Dropdown>
+        <Dropdown.Toggle variant="success" id="dropdown-basic">
+          
+        <i className="fas fa-user-circle"></i> {userData.result.username}
+             
+        </Dropdown.Toggle>
+      
+        <Dropdown.Menu>
+          <Dropdown.Item href="#/action-1">Preferences</Dropdown.Item>
+          <Dropdown.Item href="#/action-2">Settings</Dropdown.Item>
+          <Dropdown.Item href="#/action-2">Logout</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+        
+        
+        
+        :
+<Button variant="outline-success btn-sm" onClick={() => setModalShow(true)}>
             <i className="fas fa-user 2x"> </i> Login/SignUp
       </Button>
+            } 
+             
 
         <MyVerticallyCenteredModal
         
@@ -225,6 +247,7 @@ const onChangeHandler = (e)=>{
         onHide={() => setModalShow(false)}
         onchangehandler = {onChangeHandler}
         onSubmit = {()=>submit(false) }
+        activeUser={userData}
         
          />
             </form>
