@@ -1,4 +1,4 @@
-import React , {useEffect, useState} from 'react'
+import React , {useEffect, useState ,useLayoutEffect} from 'react'
 import MyVerticallyCenteredModal from './../Logsignup'
 import { Dropdown } from 'react-bootstrap';
 import { Button } from "react-bootstrap";
@@ -6,35 +6,30 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import urls from './../../routes'
 import axios from 'axios';
 import swal from 'sweetalert'
-export default function Header(props) {
-   const history =useHistory() 
+import constant from '../../constant';
+import routes from 'webpack-dev-server/lib/utils/routes';
+export default function Header() {
+   const history = useHistory()   
+     
   const [modalShow, setModalShow] = React.useState(false);
-
-   
-
 
   const [value,setValue] = useState({
     email:"" , 
     username:"" , 
     password :"" ,
     attchment: [] ,
-    video :[]
-})
+    video :[],
+    userDetails:"" 
 
+   })
+
+
+   
 const [err , setError] = useState({
      setName:"" , 
      setTitle : "" 
 })
  
-// useEffect(()=>{
-//   axios.get('/dashboard').then(response=>{
-//     console.log(response) 
-// }).catch(err=>{
-// console.log(err);
-// } , [])
-
-// })
-
 
 const submit = (e)=> {
   //  debugger
@@ -54,7 +49,7 @@ const submit = (e)=> {
        password:value.password  
       })
        
-    console.log("email" ,value )
+
   
     const model ={  
       username : value.username , 
@@ -137,22 +132,9 @@ if( value.name=="" && value.title=="" ){
 
 setError({setName:"please enter name "})
 setError({setTitle:" please Enter title " }) 
-    }
-}
-
-
-
-
- 
-
-}
-
-
-
-
-
-
-
+     }
+   }
+ }
 }
 
 const onChangeHandler = (e)=>{
@@ -168,11 +150,27 @@ const onChangeHandler = (e)=>{
     }   
 
    setValue({ ...value ,  [e.target.name] : e.target.value } );
-    console.log(value)
-  
     }
 
-   const {userData } = props
+
+    useEffect(()=>{
+      axios.get('/dashboard').then(response=>{
+       if(response.status===constant.status.success){
+        setValue({        
+          userDetails:response.data
+        })
+       }  
+       else{
+        swal("", response.data.messsage , "error");
+          history.push(urls.home) 
+      } 
+        })
+         
+        console.log(value.userDetails)   
+    } ,[] )
+     
+   
+
     return (
       
         <React.Fragment>
@@ -216,12 +214,13 @@ const onChangeHandler = (e)=>{
 
             </ul>
             <form className="d-flex"> 
-            {
-        userData!=false? 
-        <Dropdown>
+     {
+        value.userDetails!=""?
+       
+         <Dropdown>
         <Dropdown.Toggle variant="success" id="dropdown-basic">
           
-        <i className="fas fa-user-circle"></i> {userData.result.username}
+        <i className="fas fa-user-circle"></i> {value.userDetails.result.username}  
              
         </Dropdown.Toggle>
       
@@ -231,24 +230,21 @@ const onChangeHandler = (e)=>{
           <Dropdown.Item href="#/action-2">Logout</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
-        
-        
-        
         :
 <Button variant="outline-success btn-sm" onClick={() => setModalShow(true)}>
             <i className="fas fa-user 2x"> </i> Login/SignUp
       </Button>
-            } 
-             
+     }
 
-        <MyVerticallyCenteredModal
+
+
+        < MyVerticallyCenteredModal
         
         show={modalShow}
         onHide={() => setModalShow(false)}
         onchangehandler = {onChangeHandler}
         onSubmit = {()=>submit(false) }
-        activeUser={userData}
-        
+         
          />
             </form>
           </div>
@@ -257,4 +253,6 @@ const onChangeHandler = (e)=>{
              
         </React.Fragment>
     )
+
+    
 }

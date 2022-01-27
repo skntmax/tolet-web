@@ -37,7 +37,7 @@ componentDidMount(){
 
       dashboard  
 
-     <h1>username: </h1>
+     <h1> username : </h1>
        {  
        
         this.state.userDetails.result.username 

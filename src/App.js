@@ -18,7 +18,7 @@ function App() {
       <Switch >
      
          <Route exact path='/' component={Home} /> 
-           <Route  path={urls.dashboard} component={userDashboard} /> 
+           <Route  path={urls.dashboard} component= {userDashboard} /> 
       
      </Switch>
      </React.Fragment>

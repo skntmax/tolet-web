@@ -1,5 +1,6 @@
 module.exports = {
-  signup :"/signup", 
-  dashboard:"/dashboard" 
+    home: "/",
+    signup: "/signup",
+    dashboard: "/dashboard"
 
 }
