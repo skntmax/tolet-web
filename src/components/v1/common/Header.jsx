@@ -1,7 +1,8 @@
-import React , {useEffect, useState ,useLayoutEffect} from 'react'
+import React , {useEffect, useState } from 'react'
 import MyVerticallyCenteredModal from './../Logsignup'
 import { Dropdown } from 'react-bootstrap';
 import { Button } from "react-bootstrap";
+import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import urls from './../../routes'
 import axios from 'axios';
@@ -14,7 +15,8 @@ export default function Header() {
   const [modalShow, setModalShow] = React.useState(false);
 
   const [value,setValue] = useState({
-    email:"" , 
+  
+     email:"" , 
     username:"" , 
     password :"" ,
     attchment: [] ,
@@ -33,7 +35,6 @@ const [err , setError] = useState({
 
 const submit = (e)=> {
   //  debugger
-  
  const emailorusername = value.email ; 
   const  isemail = String( emailorusername )
   .toLowerCase()
@@ -49,15 +50,13 @@ const submit = (e)=> {
        password:value.password  
       })
        
-
-  
     const model ={  
       username : value.username , 
       email: value.email ,
       password:value.password   
     }
                         
-  if(value.email!="" && value.password!="" && value.username=== "" ) {
+  if(value.email!="" && value.password!="" && value.username==="" ) {
                 axios.post('login/' , model ).then((res)=> {
                 if(res.data.status===true){ 
                 swal(`${res.data.result[0].username}`, " succesfully logged in ", "success");
@@ -111,6 +110,8 @@ if(value.email=="" && value.password!="" && value.username!="" ){
               console.log(" response " , res.data )
               if(res.data.status==true){
                 swal(`${res.data.result[0].username}`, " succesfully logged in ", "success");
+                setModalShow(false)
+                history.push(urls.dashboard) 
                 return  
               }
               swal(`${res.data.message}` , "", "warning");
@@ -154,11 +155,15 @@ const onChangeHandler = (e)=>{
 
 
     useEffect(()=>{
+       
       axios.get('/dashboard').then(response=>{
-       if(response.status===constant.status.success){
-        setValue({        
+          console.log("response>>>>>>>>" , response)
+        if(response.data.status===constant.status.success){
+        
+          setValue({        
           userDetails:response.data
         })
+
        }  
        else{
         swal("", response.data.messsage , "error");
@@ -169,7 +174,8 @@ const onChangeHandler = (e)=>{
         console.log(value.userDetails)   
     } ,[] )
      
-   
+
+
 
     return (
       
@@ -225,10 +231,14 @@ const onChangeHandler = (e)=>{
         </Dropdown.Toggle>
       
         <Dropdown.Menu>
-          <Dropdown.Item href="#/action-1">Preferences</Dropdown.Item>
-          <Dropdown.Item href="#/action-2">Settings</Dropdown.Item>
-          <Dropdown.Item href="#/action-2">Logout</Dropdown.Item>
-        </Dropdown.Menu>
+        
+          <Dropdown.Item ><Link to="" >Preferences </Link></Dropdown.Item>
+          <Dropdown.Item ><Link to="" >Settings </Link> </Dropdown.Item>
+          <Dropdown.Item ><Link to={urls.logout}  >Logout</Link> </Dropdown.Item>
+          
+        
+         </Dropdown.Menu>
+
       </Dropdown>
         :
 <Button variant="outline-success btn-sm" onClick={() => setModalShow(true)}>
@@ -243,7 +253,7 @@ const onChangeHandler = (e)=>{
         show={modalShow}
         onHide={() => setModalShow(false)}
         onchangehandler = {onChangeHandler}
-        onSubmit = {()=>submit(false) }
+        onSubmit = { ()=>submit(false) }
          
          />
             </form>

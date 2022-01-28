@@ -1,6 +1,7 @@
 module.exports = {
     home: "/",
     signup: "/signup",
-    dashboard: "/dashboard"
+    dashboard: "/dashboard",
+    logout: "/logout"
 
 }

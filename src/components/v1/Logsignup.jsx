@@ -32,17 +32,20 @@ export default function MyVerticallyCenteredModal(props) {
 
    const signUp = (e)=>{
 
-
+debugger
      if((userVal.email &&userVal.name &&userVal.mobile && userVal.password)!="" ){
+        
         const model = {
           email:userVal.email,
            name:userVal.name,
             mobile:userVal.mobile, 
              password: userVal.password
         }
+         
        axios.post('/signup' , model ).then(response=>{
          debugger
-        if(response.data.status===constant.status.success){
+        
+         if(response.data.status===constant.status.success){
           swal("succesfully created ", response.data.data.username , "success");
          
           axios.post('/login' , 
@@ -65,8 +68,8 @@ export default function MyVerticallyCenteredModal(props) {
         if(response.data.status===constant.status.failed)
               swal("Erro", response.data.data.messsage , "error");
 
-      }).catch(err=>{
-          alert("err",err)
+      }).catch(error=>{
+          alert("err",error)
        })
 
 
